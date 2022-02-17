@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="">
+    <TableRow
+        style="@style/table_row_style">
+        <TextView
+            android:text="Header 0"
+            style="@style/table_row_header_style"/>
+        <TextView
+            android:text="Value 0"
+            style="@style/table_row_value_style"/>
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:text="Header 1"
+            style="@style/table_row_header_style"/>
+        <TextView
+            android:text="Value 1"
+            style="@style/table_row_value_style"/>
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:text="Header 2"
+            style="@style/table_row_header_style"/>
+        <TextView
+            android:text="Value2"
+            style="@style/table_row_value_style"/>
+    </TableRow>
+
+
+
+</TableLayout>
