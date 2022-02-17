@@ -1,9 +1,9 @@
 package com.example.gasstations.domain.repository
 
-import com.example.gasstations.domain.models.RefuelModel
+import com.example.gasstations.domain.models.RefuelDomain
 
 interface Repository {
-    fun stations():List<RefuelModel>
+    fun stations():List<RefuelDomain>
 
-    fun refuels(address:String):List<RefuelModel>
+    fun refuels(address:String):List<RefuelDomain>
 }

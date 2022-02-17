@@ -5,18 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.gasstations.databinding.FragmentGasStationsListBinding
+import com.example.gasstations.databinding.FragmentStationsListBinding
 
-class GasStationsListFragment : Fragment() {
+class StationsListFragment : Fragment() {
 
-    private lateinit var binding: FragmentGasStationsListBinding
+    private lateinit var binding: FragmentStationsListBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentGasStationsListBinding.inflate(inflater, container, false)
+        binding = FragmentStationsListBinding.inflate(inflater, container, false)
         return binding.root
     }
 }

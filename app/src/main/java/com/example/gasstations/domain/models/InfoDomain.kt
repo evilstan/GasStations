@@ -1,7 +1,7 @@
 package com.example.gasstations.domain.models
 
-class InfoModel(
-    private val refuels: List<RefuelModel>
+class InfoDomain(
+    private val refuels: List<RefuelDomain>
 ) {
     fun name() = refuels.first().gasStationName
 

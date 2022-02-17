@@ -1,6 +1,6 @@
 package com.example.gasstations.domain.models
 
-data class RefuelModel(
+data class RefuelDomain(
     val gasStationName:String,
     val address:String,
     val fuelAmount:Double
