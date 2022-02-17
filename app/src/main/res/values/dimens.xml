@@ -5,4 +5,6 @@
     <dimen name="info_header_weight">0.5</dimen>
     <dimen name="info_value_weight">1</dimen>
 
+    <dimen name="recycler_margin">4dp</dimen>
+
 </resources>

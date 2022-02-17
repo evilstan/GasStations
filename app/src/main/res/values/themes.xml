@@ -18,12 +18,16 @@
 
     </style>
 
-    <style name="item_mane_style" parent="rv_list_item_style">
+    <style name="recycler_item_name_style" parent="rv_list_item_style">
 
     </style>
 
-    <style name="item_address_style" parent="rv_list_item_style">
+    <style name="recycler_item_address_style" parent="rv_list_item_style">
 
+    </style>
+
+    <style name="recycler_style" parent="rv_list_item_style">
+        <item name="android:layout_margin">@dimen/recycler_margin</item>
     </style>
 
     <style name="table_layout_base" parent="android:TextAppearance">
