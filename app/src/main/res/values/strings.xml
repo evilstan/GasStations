@@ -3,4 +3,12 @@
     <string name="tab_station_list">Gas Stations</string>
     <string name="tab_station_info">Statistics</string>
 
+    <string name="fuel_amount">Fuel amount = \u0020</string>
+    <string name="station_name">Name:\u0020</string>
+    <string name="station_address">Address:\u0020</string>
+    <string name="station_visits">Visits:\u0020</string>
+    <string name="total_fuel">Total fuel:\u0020</string>
+
+
+
 </resources>

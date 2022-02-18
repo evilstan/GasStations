@@ -46,5 +46,14 @@
 
     </style>
 
+    <style name="floatingactonbutton_style">
+        <item name="android:layout_marginEnd">@dimen/floatingactionbutton_margin_end</item>
+        <item name="android:layout_marginBottom">@dimen/floatingactionbutton_margin_bottom</item>
 
+    </style>
+
+    <style name="recycler_item_style" >
+        <item name="android:layout_marginTop">@dimen/recycler_item_margin_vert</item>
+        <item name="android:layout_marginBottom">@dimen/recycler_item_margin_vert</item>
+    </style>
 </resources>

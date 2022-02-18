@@ -2,10 +2,13 @@ package com.example.gasstations.domain.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.gasstations.data.storage.models.RefuelCache
 import com.example.gasstations.domain.models.RefuelDomain
 
 interface Repository {
-    fun stations(): MutableLiveData<List<RefuelDomain>>
+    suspend fun refuels(): List<RefuelCache>
 
-    fun refuels(address:String):MutableLiveData<List<RefuelDomain>>
+    suspend fun insert(refuelCache: RefuelCache)
+
+    suspend fun delete(id: Int)
 }

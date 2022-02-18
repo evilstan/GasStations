@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "243354986325",
+    "project_id": "gas-stations-775de",
+    "storage_bucket": "gas-stations-775de.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:243354986325:android:a511d7e5de874c66f4b1dc",
+        "android_client_info": {
+          "package_name": "com.example.gasstations"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "243354986325-lfanc9k6djhre9fhbg8lq08thk857ap0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXOB2Er_kVJpLJSQsBqH21DaNI3mWDsuM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "243354986325-lfanc9k6djhre9fhbg8lq08thk857ap0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

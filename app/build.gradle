@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 
 }
 
@@ -38,11 +40,17 @@ android {
 }
 
 dependencies {
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
+
+    implementation platform('com.google.firebase:firebase-bom:29.1.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-firestore:24.0.1'
+
     implementation "androidx.viewpager2:viewpager2:1.0.0"
-    //Room
+    
     implementation "androidx.room:room-ktx:2.4.1"
+    implementation 'com.google.android.gms:play-services-location:19.0.1'
     kapt "androidx.room:room-compiler:2.4.1"
-    kapt "android.arch.persistence.room:compiler:1.1.1"
 
     implementation "androidx.fragment:fragment-ktx:1.4.1"
 

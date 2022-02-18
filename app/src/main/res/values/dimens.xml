@@ -7,4 +7,9 @@
 
     <dimen name="recycler_margin">4dp</dimen>
 
+    <dimen name="floatingactionbutton_margin_bottom">32dp</dimen>
+    <dimen name="floatingactionbutton_margin_end">32dp</dimen>
+
+    <dimen name="recycler_item_margin_vert">4dp</dimen>
+
 </resources>

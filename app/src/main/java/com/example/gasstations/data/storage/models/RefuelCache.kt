@@ -5,10 +5,10 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "refuels")
 data class RefuelCache(
-    var gasStationName: String,
+    var name: String,
     var address: String,
     var fuelAmount: Double,
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
     var uploaded: Boolean = false
 ) {
