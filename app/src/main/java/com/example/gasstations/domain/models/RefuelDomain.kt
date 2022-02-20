@@ -1,8 +1,11 @@
 package com.example.gasstations.domain.models
 
 data class RefuelDomain(
-    val name:String,
-    val address:String,
-    val fuelAmount:Double,
-    val id:Int = 0
+    val brand: String,
+    var latitude: Double,
+    var longitude: Double,
+    var fuelType:String,
+    val fuelVolume: Double,
+    var fuelPrice:Double,
+    val id: Int = 0
 )

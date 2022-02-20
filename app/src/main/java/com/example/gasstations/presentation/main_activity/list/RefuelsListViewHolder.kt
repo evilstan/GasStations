@@ -9,15 +9,32 @@ class RefuelsListViewHolder(private val binding: ListItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
     private val view = binding.root
 
-    fun setItem(refuelCache: RefuelDomain) {
+    fun setItem(refuelDomain: RefuelDomain) {
 
-        val name = getString(R.string.station_name) + refuelCache.name
-        val address = getString(R.string.station_address) + refuelCache.address
-        val fuelAmount = getString(R.string.fuel_amount) + refuelCache.fuelAmount.format(2)
+        val name = getString(R.string.brand) + refuelDomain.brand
 
-        binding.stationName.text = name
-        binding.stationAddress.text = address
-        binding.fuelAmount.text = fuelAmount
+        val fuelType =
+            getString(R.string.fuel_type) +
+                    refuelDomain.fuelType
+
+        val coordinates =
+            getString(R.string.station_address) +
+                    refuelDomain.latitude + ", " +
+                    refuelDomain.longitude
+
+        val fuelAmount = getString(R.string.fuel_amount) +
+                refuelDomain.fuelVolume.format(2) +
+                getString(R.string.units)
+
+        val fuelPrice = getString(R.string.fuel_price) +
+                getString(R.string.currency) +
+                refuelDomain.fuelPrice.format(2)
+
+        binding.brand.text = name
+        binding.stationAddress.text = coordinates
+        binding.fuelType.text = fuelType
+        binding.fuelVolume.text = fuelAmount
+        binding.fuelPrice.text = fuelPrice
     }
 
     private fun Double.format(digits: Int) = "%.${digits}f".format(this)

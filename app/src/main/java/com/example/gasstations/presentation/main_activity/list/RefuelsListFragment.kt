@@ -16,7 +16,8 @@ import com.example.gasstations.domain.usecase.GetAllRefuelsUseCase
 import com.example.gasstations.presentation.map_activity.MapActivity
 
 class RefuelsListFragment : Fragment(),
-    OnRefuelLongClickListener, View.OnClickListener {
+    OnRefuelLongClickListener, View.OnClickListener, OnRefuelClickListener,
+    OnRefuelChangedListener {
 
     private lateinit var binding: FragmentStationsListBinding
     private lateinit var adapter: RefuelsListRecyclerAdapter
@@ -45,11 +46,9 @@ class RefuelsListFragment : Fragment(),
             DeleteRefuelUseCase(repository)
         )
 
+        adapter = RefuelsListRecyclerAdapter(emptyList(), this,this)
+        viewModel.refuelLiveData.observe(viewLifecycleOwner) { adapter.update(it) }
 
-        adapter = RefuelsListRecyclerAdapter(emptyList(), this)
-        viewModel.refuelLiveData.observe(viewLifecycleOwner) {
-            adapter.update(it)
-        }
         binding.gasStationsRecycler.adapter = adapter
         binding.addFb.setOnClickListener(this)
     }
@@ -62,5 +61,14 @@ class RefuelsListFragment : Fragment(),
     override fun onClick(view: View?) {
         val intent = Intent(requireContext(), MapActivity::class.java)
         startActivity(intent)
+    }
+
+    override fun onClick(refuelDomain: RefuelDomain): Boolean {
+        ChangeRefuelDialog(this,refuelDomain).show(childFragmentManager,"")
+        return true
+    }
+
+    override fun onChange(refuelDomain: RefuelDomain) {
+        //TODO
     }
 }

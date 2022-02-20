@@ -14,19 +14,19 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="rv_list_item_style" parent="android:TextAppearance">
+    <style name="recycler_list_item_style" parent="android:TextAppearance">
+        <item name="singleLine">false</item>
+    </style>
+
+    <style name="recycler_item_brand_style" parent="recycler_list_item_style">
 
     </style>
 
-    <style name="recycler_item_name_style" parent="rv_list_item_style">
+    <style name="recycler_item_details_style" parent="recycler_list_item_style">
 
     </style>
 
-    <style name="recycler_item_address_style" parent="rv_list_item_style">
-
-    </style>
-
-    <style name="recycler_style" parent="rv_list_item_style">
+    <style name="recycler_style" parent="recycler_list_item_style">
         <item name="android:layout_margin">@dimen/recycler_margin</item>
     </style>
 
@@ -34,21 +34,9 @@
         <item name="android:textSize">@dimen/info_text_size</item>
     </style>
 
-    <style name="table_row_header_style" parent="table_layout_base">
-        <item name="android:layout_weight">@dimen/info_header_weight</item>
-    </style>
-
-    <style name="table_row_value_style" parent="table_layout_base">
-        <item name="android:layout_weight">@dimen/info_value_weight</item>
-    </style>
-
-    <style name="table_row_style" parent="table_layout_base">
-
-    </style>
-
-    <style name="floatingactonbutton_style">
-        <item name="android:layout_marginEnd">@dimen/floatingactionbutton_margin_end</item>
-        <item name="android:layout_marginBottom">@dimen/floatingactionbutton_margin_bottom</item>
+    <style name="floating_action_button_style">
+        <item name="android:layout_marginEnd">@dimen/floating_action_button_margin_end</item>
+        <item name="android:layout_marginBottom">@dimen/floating_action_button_margin_bottom</item>
 
     </style>
 
@@ -56,4 +44,32 @@
         <item name="android:layout_marginTop">@dimen/recycler_item_margin_vert</item>
         <item name="android:layout_marginBottom">@dimen/recycler_item_margin_vert</item>
     </style>
+
+    <style name="aim_image_style" >
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:src">@drawable/aim_icon</item>
+    </style>
+
+    <style name="aim_hint_style" parent="TextAppearance.AppCompat" >
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="dialog_spinner_text_style" parent="TextAppearance.AppCompat" >
+        <item name="android:textSize">@dimen/dialog_caption_text_size</item>
+        <item name="android:layout_margin">4dp</item>
+    </style>
+
+    <style name="dialog_caption_text_style" parent="TextAppearance.AppCompat" >
+        <item name="android:textSize">@dimen/dialog_caption_text_size</item>
+    </style>
+
+    <style name="dialog_main_text_style" parent="TextAppearance.AppCompat" >
+        <item name="android:textSize">@dimen/dialog_main_text_size</item>
+        <item name="android:layout_margin">@dimen/dialog_main_text_margin</item>
+    </style>
+
 </resources>

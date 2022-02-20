@@ -28,8 +28,8 @@ class MainActivity : FragmentActivity() {
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             val text = when (position) {
-                0 -> resources.getString(R.string.tab_station_list)
-                1 -> resources.getString(R.string.tab_station_info)
+                0 -> resources.getString(R.string.refuels_list)
+                1 -> resources.getString(R.string.station_statistics)
                 else -> ""
             }
             tab.text = text

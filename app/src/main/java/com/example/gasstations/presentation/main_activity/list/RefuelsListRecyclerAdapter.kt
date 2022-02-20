@@ -6,9 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.gasstations.databinding.ListItemBinding
 import com.example.gasstations.domain.models.RefuelDomain
 
+
 class RefuelsListRecyclerAdapter(
     private var dataset: List<RefuelDomain>,
-    private val onClickListener: OnRefuelLongClickListener
+    private val onRefuelLongClickListener: OnRefuelLongClickListener,
+    private val onRefuelClickListener: OnRefuelClickListener
+
 ) :
     RecyclerView.Adapter<RefuelsListViewHolder>() {
 
@@ -28,7 +31,8 @@ class RefuelsListRecyclerAdapter(
     override fun onBindViewHolder(holder: RefuelsListViewHolder, position: Int) {
         val refuel = dataset[position]
         holder.setItem(refuel)
-        holder.itemView.setOnLongClickListener { onClickListener.onLongClick(refuel) }
+        holder.itemView.setOnLongClickListener { onRefuelLongClickListener.onLongClick(refuel) }
+        holder.itemView.setOnClickListener{onRefuelClickListener.onClick(refuel)}
     }
 
     override fun getItemCount(): Int = dataset.size

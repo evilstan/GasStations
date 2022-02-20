@@ -1,9 +1,7 @@
 package com.example.gasstations.data.storage.database
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room.*
 import com.example.gasstations.data.storage.models.RefuelCache
 
 @Database(entities = [RefuelCache::class], version = 1, exportSchema = false)

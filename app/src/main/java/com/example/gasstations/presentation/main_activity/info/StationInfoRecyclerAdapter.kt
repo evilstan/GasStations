@@ -4,15 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gasstations.databinding.StatisticsItemBinding
-import com.example.gasstations.domain.models.InfoDomain
+import com.example.gasstations.domain.models.StationInfoDomain
 
 class StationInfoRecyclerAdapter :
     RecyclerView.Adapter<StationInfoViewHolder>() {
     private lateinit var binding: StatisticsItemBinding
-    private var dataset = emptyList<InfoDomain>()
+    private var dataset = emptyList<StationInfoDomain>()
 
-    fun update(infoDomains: List<InfoDomain>) {
-        dataset = infoDomains
+    fun update(stationInfoDomains: List<StationInfoDomain>) {
+        dataset = stationInfoDomains
         notifyDataSetChanged()
     }
 

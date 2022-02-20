@@ -9,9 +9,12 @@ class GetAllRefuelsUseCase(private val repository: Repository) {
 
     private fun map(refuelCache: RefuelCache) =
         RefuelDomain(
-            refuelCache.name,
-            refuelCache.address,
+            refuelCache.brand,
+            refuelCache.latitude,
+            refuelCache.longitude,
+            refuelCache.fuelType,
             refuelCache.fuelAmount,
+            refuelCache.fuelPrice,
             refuelCache.id
         )
 }
