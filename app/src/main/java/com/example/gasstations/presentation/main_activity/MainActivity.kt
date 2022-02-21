@@ -5,8 +5,8 @@ import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.example.gasstations.R
-import com.example.gasstations.presentation.RefuelsSyncService
 import com.example.gasstations.databinding.ActivityMainBinding
+import com.example.gasstations.presentation.RefuelsSyncService
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -15,11 +15,11 @@ class MainActivity : FragmentActivity() {
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout: TabLayout
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         tabLayout = binding.tabLayout
         viewPager = binding.pager
@@ -34,7 +34,5 @@ class MainActivity : FragmentActivity() {
             }
             tab.text = text
         }.attach()
-        val intent = Intent(this, RefuelsSyncService::class.java)
-        startService(intent)
     }
 }

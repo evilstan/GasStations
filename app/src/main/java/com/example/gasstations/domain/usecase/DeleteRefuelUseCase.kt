@@ -5,8 +5,11 @@ import com.example.gasstations.domain.repository.Repository
 
 class DeleteRefuelUseCase(private val repository: Repository) {
     suspend fun execute(refuelModel: RefuelModel) {
-       // repository.delete(refuelModel.id)
-        refuelModel.deleted = true
-        repository.update(refuelModel)
+        if (refuelModel.deleted) {
+            repository.delete(refuelModel)
+        } else {
+            refuelModel.deleted = true
+            repository.update(refuelModel)
+        }
     }
 }
