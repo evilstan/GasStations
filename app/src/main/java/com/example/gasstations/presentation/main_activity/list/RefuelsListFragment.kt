@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import com.example.gasstations.data.core.App
 import com.example.gasstations.data.repository.RepositoryImpl
 import com.example.gasstations.data.storage.database.AppDatabase
+import com.example.gasstations.data.storage.models.RefuelModel
 import com.example.gasstations.databinding.FragmentStationsListBinding
-import com.example.gasstations.domain.models.RefuelDomain
 import com.example.gasstations.domain.usecase.DeleteRefuelUseCase
 import com.example.gasstations.domain.usecase.GetAllRefuelsUseCase
 import com.example.gasstations.presentation.map_activity.MapActivity
@@ -33,11 +33,6 @@ class RefuelsListFragment : Fragment(),
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.getStations()
-    }
-
     private fun initComponents() {
         val repository = RepositoryImpl(AppDatabase.getInstance(App.instance))
 
@@ -53,8 +48,8 @@ class RefuelsListFragment : Fragment(),
         binding.addFb.setOnClickListener(this)
     }
 
-    override fun onLongClick(refuelDomain: RefuelDomain): Boolean {
-        viewModel.deleteStation(refuelDomain)
+    override fun onLongClick(refuelModel: RefuelModel): Boolean {
+        viewModel.deleteStation(refuelModel)
         return true
     }
 
@@ -63,12 +58,12 @@ class RefuelsListFragment : Fragment(),
         startActivity(intent)
     }
 
-    override fun onClick(refuelDomain: RefuelDomain): Boolean {
-        ChangeRefuelDialog(this,refuelDomain).show(childFragmentManager,"")
+    override fun onClick(refuelModel: RefuelModel): Boolean {
+        EditRefuelDialog(this,refuelModel).show(childFragmentManager,"")
         return true
     }
 
-    override fun onChange(refuelDomain: RefuelDomain) {
+    override fun onChange(refuelModel: RefuelModel) {
         //TODO
     }
 }

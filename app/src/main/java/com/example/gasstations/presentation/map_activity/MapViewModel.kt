@@ -2,7 +2,6 @@ package com.example.gasstations.presentation.map_activity
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.gasstations.domain.models.RefuelDomain
 import com.example.gasstations.domain.usecase.AddStationUseCase
 import com.example.gasstations.domain.usecase.GetAllRefuelsUseCase
 import com.example.gasstations.domain.usecase.IsNearestExistUseCase
@@ -13,16 +12,10 @@ import kotlinx.coroutines.launch
 class MapViewModel(
     private val addStationUseCase: AddStationUseCase,
     private val isNearestExistUseCase: IsNearestExistUseCase,
-    private val getAllRefuelsUseCase: GetAllRefuelsUseCase
+    getAllRefuelsUseCase: GetAllRefuelsUseCase
 ) : BaseViewModel() {
-    val stationsLiveData = MutableLiveData<List<RefuelDomain>>()
+    var stationsLiveData = getAllRefuelsUseCase.execute()
     val checkLiveData = MutableLiveData<Boolean>()
-
-    fun getAll() {
-        viewModelScope.launch {
-            stationsLiveData.postValue(getAllRefuelsUseCase.execute())
-        }
-    }
 
     fun check(stationPosition: LatLng) {
         viewModelScope.launch {

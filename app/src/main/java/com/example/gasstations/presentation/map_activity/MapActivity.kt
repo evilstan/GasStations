@@ -91,7 +91,6 @@ class MapActivity :
         }
     }
 
-
     override fun onSaveInstanceState(outState: Bundle) {
         map.let { map ->
             outState.putParcelable(KEY_CAMERA_POSITION, map.cameraPosition)
@@ -100,7 +99,6 @@ class MapActivity :
         super.onSaveInstanceState(outState)
     }
 
-
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
 
@@ -108,7 +106,6 @@ class MapActivity :
             CameraUpdateFactory
                 .newLatLngZoom(defaultLocation, DEFAULT_ZOOM.toFloat())
         )
-        mapViewModel.getAll()
 
         getLocationPermission()
         updateLocationUI()

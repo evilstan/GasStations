@@ -1,6 +1,6 @@
 package com.example.gasstations.domain.models
 
-class StationInfoDomain(
+class StationInfoModel(
     val name:String,
     val address:String,
     val totalVisits: Int,

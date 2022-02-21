@@ -4,12 +4,12 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "refuels")
-data class RefuelCache(
+data class RefuelModel(
     var brand: String,
     var latitude: Double,
     var longitude: Double,
     var fuelType:String,
-    var fuelAmount: Double,
+    var fuelVolume: Double,
     var fuelPrice:Double,
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,

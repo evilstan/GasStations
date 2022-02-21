@@ -9,11 +9,11 @@ import com.example.gasstations.data.core.App
 import com.example.gasstations.data.repository.RepositoryImpl
 import com.example.gasstations.data.storage.database.AppDatabase
 import com.example.gasstations.databinding.FragmentStationInfoBinding
-import com.example.gasstations.domain.usecase.GetStatisticsUseCase
+import com.example.gasstations.domain.usecase.GetInfoUseCase
 
 class StationInfoFragment : Fragment() {
     private lateinit var binding: FragmentStationInfoBinding
-    private lateinit var viewModel: StationInfoViewModel
+    private lateinit var stationInfoViewModel: StationInfoViewModel
     private lateinit var adapter: StationInfoRecyclerAdapter
 
     override fun onCreateView(
@@ -26,14 +26,9 @@ class StationInfoFragment : Fragment() {
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.getInfo()
-    }
-
     private fun initComponents() {
-        viewModel = StationInfoViewModel(
-            GetStatisticsUseCase(
+        stationInfoViewModel = StationInfoViewModel(
+            GetInfoUseCase(
                 RepositoryImpl(
                     AppDatabase.getInstance(
                         App.instance
@@ -44,7 +39,7 @@ class StationInfoFragment : Fragment() {
 
         adapter = StationInfoRecyclerAdapter()
         binding.gasStationsRecycler.adapter = adapter
-        viewModel.stationsInfoLiveData.observe(viewLifecycleOwner) { adapter.update(it) }
+        stationInfoViewModel.stationsInfoLiveData.observe(viewLifecycleOwner) { adapter.update(it) }
     }
 
 }

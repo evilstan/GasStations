@@ -8,13 +8,13 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.gasstations.R
+import com.example.gasstations.data.storage.models.RefuelModel
 import com.example.gasstations.databinding.DialogChangeRefuelBinding
-import com.example.gasstations.domain.models.RefuelDomain
 import com.example.gasstations.presentation.MoneyFuelInputFilter
 
-class ChangeRefuelDialog(
+class EditRefuelDialog(
     private val onRefuelChangedListener: OnRefuelChangedListener,
-    private val refuelDomain: RefuelDomain
+    private val refuelModel: RefuelModel
 ) :
     DialogFragment() {
 
@@ -47,13 +47,13 @@ class ChangeRefuelDialog(
             true
         }
 
-        binding.editBrand.setText(refuelDomain.brand)
+        binding.editBrand.setText(refuelModel.brand)
         binding.spinnerFuelType.setSelection(
             resources.getStringArray(R.array.fuel_types)
-                .indexOf(refuelDomain.fuelType)
+                .indexOf(refuelModel.fuelType)
         )
-        binding.editVolume.setText(refuelDomain.fuelVolume.toString())
-        binding.editPrice.setText(refuelDomain.fuelPrice.toString())
+        binding.editVolume.setText(refuelModel.fuelVolume.toString())
+        binding.editPrice.setText(refuelModel.fuelPrice.toString())
 
         binding.btnUpdate.setOnClickListener { addStation() }
         binding.btnCancel.setOnClickListener { dialog.cancel() }
