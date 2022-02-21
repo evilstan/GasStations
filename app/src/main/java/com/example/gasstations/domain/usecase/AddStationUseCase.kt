@@ -11,7 +11,7 @@ class AddStationUseCase(private val repository: Repository) {
         name: String,
         stationPosition: LatLng,
         fuelType: String,
-        fuelAmount: Double,
+        fuelVolume: Double,
         fuelPrice: Double
     ) {
         repository.insert(
@@ -20,7 +20,7 @@ class AddStationUseCase(private val repository: Repository) {
                 stationPosition.latitude,
                 stationPosition.longitude,
                 fuelType,
-                fuelAmount,
+                fuelVolume,
                 fuelPrice
             )
         )

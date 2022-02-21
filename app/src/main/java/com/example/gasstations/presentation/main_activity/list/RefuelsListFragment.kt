@@ -13,6 +13,7 @@ import com.example.gasstations.data.storage.models.RefuelModel
 import com.example.gasstations.databinding.FragmentStationsListBinding
 import com.example.gasstations.domain.usecase.DeleteRefuelUseCase
 import com.example.gasstations.domain.usecase.GetAllRefuelsUseCase
+import com.example.gasstations.domain.usecase.SyncWithFirebaseUseCase
 import com.example.gasstations.presentation.map_activity.MapActivity
 
 class RefuelsListFragment : Fragment(),
@@ -38,7 +39,8 @@ class RefuelsListFragment : Fragment(),
 
         viewModel = RefuelsListViewModel(
             GetAllRefuelsUseCase(repository),
-            DeleteRefuelUseCase(repository)
+            DeleteRefuelUseCase(repository),
+            SyncWithFirebaseUseCase(repository)
         )
 
         adapter = RefuelsListRecyclerAdapter(emptyList(), this,this)

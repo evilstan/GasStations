@@ -35,5 +35,4 @@ class GetInfoUseCase(private val repository: Repository) {
             refuels.size,
             refuels.sumOf { it.fuelVolume }
         )
-
 }

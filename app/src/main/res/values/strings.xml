@@ -7,7 +7,7 @@
   <string name="refuels_list">Refuels list</string>
   <string name="station_statistics">Station statistics</string>
 
-  <string name="fuel_amount">Fuel volume:\u0020</string>
+  <string name="fuel_volume">Fuel volume:\u0020</string>
   <string name="brand">Brand:\u0020</string>
   <string name="station_address">Station coordinates:\u0020</string>
   <string name="station_visits">Visits:\u0020</string>

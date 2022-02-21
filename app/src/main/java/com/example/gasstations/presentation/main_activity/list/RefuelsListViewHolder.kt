@@ -14,15 +14,14 @@ class RefuelsListViewHolder(private val binding: ListItemBinding) :
         val name = getString(R.string.brand) + refuelDomain.brand
 
         val fuelType =
-            getString(R.string.fuel_type) +
-                    refuelDomain.fuelType
+            getString(R.string.fuel_type) + refuelDomain.fuelType
 
         val coordinates =
             getString(R.string.station_address) +
                     refuelDomain.latitude + ", " +
                     refuelDomain.longitude
 
-        val fuelAmount = getString(R.string.fuel_amount) +
+        val fuelVolume = getString(R.string.fuel_volume) +
                 refuelDomain.fuelVolume.format(2) +
                 getString(R.string.units)
 
@@ -33,7 +32,7 @@ class RefuelsListViewHolder(private val binding: ListItemBinding) :
         binding.brand.text = name
         binding.stationAddress.text = coordinates
         binding.fuelType.text = fuelType
-        binding.fuelVolume.text = fuelAmount
+        binding.fuelVolume.text = fuelVolume
         binding.fuelPrice.text = fuelPrice
     }
 

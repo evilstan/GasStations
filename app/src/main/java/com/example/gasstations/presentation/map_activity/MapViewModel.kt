@@ -14,7 +14,7 @@ class MapViewModel(
     private val isNearestExistUseCase: IsNearestExistUseCase,
     getAllRefuelsUseCase: GetAllRefuelsUseCase
 ) : BaseViewModel() {
-    var stationsLiveData = getAllRefuelsUseCase.execute()
+    var stationsLiveData = getAllRefuelsUseCase.refuels
     val checkLiveData = MutableLiveData<Boolean>()
 
     fun check(stationPosition: LatLng) {
@@ -26,14 +26,14 @@ class MapViewModel(
     fun addStation(
         stationPosition: LatLng,
         fuelType: String,
-        fuelAmount: Double,
+        fuelVolume: Double,
         fuelPrice: Double
     ) {
         viewModelScope.launch {
             addStationUseCase.execute(
                 stationPosition,
                 fuelType,
-                fuelAmount,
+                fuelVolume,
                 fuelPrice
             )
         }
@@ -43,7 +43,7 @@ class MapViewModel(
         brand: String,
         stationPosition: LatLng,
         fuelType: String,
-        fuelAmount: Double,
+        fuelVolume: Double,
         fuelPrice: Double
     ) {
         viewModelScope.launch {
@@ -51,7 +51,7 @@ class MapViewModel(
                 brand,
                 stationPosition,
                 fuelType,
-                fuelAmount,
+                fuelVolume,
                 fuelPrice
             )
         }

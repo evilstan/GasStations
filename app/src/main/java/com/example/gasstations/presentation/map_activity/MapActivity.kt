@@ -107,7 +107,7 @@ class MapActivity :
                 .newLatLngZoom(defaultLocation, DEFAULT_ZOOM.toFloat())
         )
 
-        getLocationPermission()
+        //getLocationPermission()
         updateLocationUI()
         getDeviceLocation()
     }

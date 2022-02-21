@@ -13,5 +13,6 @@ data class RefuelModel(
     var fuelPrice:Double,
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
-    var uploaded: Boolean = false
+    var uploaded: Boolean = false,
+    var deleted: Boolean = false
 )
