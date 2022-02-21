@@ -47,7 +47,7 @@ class RefuelsSyncService :
     private val newItemsLiveData = NewItemsUseCase(repository).data
     private val deletedItemsLiveData = DeletedItemsUseCase(repository).data
 
-    private val myRef = Firebase.database(databaseUrl).getReference(databasePath)
+    private val database = Firebase.database(databaseUrl).getReference(databasePath)
     private lateinit var startTime: Calendar
 
     override fun onCreate() {
@@ -82,7 +82,7 @@ class RefuelsSyncService :
     }
 
     private fun syncNewItems(refuelModel: RefuelModel) {
-        myRef.child(databasePath).child(refuelModel.id.toString()).setValue(map(refuelModel))
+        database.child(refuelModel.id.toString()).setValue(map(refuelModel))
             .addOnSuccessListener {
                 refuelModel.uploaded = true
                 GlobalScope.launch(Dispatchers.Main) {
@@ -94,7 +94,7 @@ class RefuelsSyncService :
     }
 
     private fun syncDeletedItems(refuelModel: RefuelModel) {
-        myRef.child(databasePath).child(refuelModel.id.toString()).removeValue()
+        database.child(refuelModel.id.toString()).removeValue()
             .addOnSuccessListener {
                 GlobalScope.launch(Dispatchers.Main) {
                     withContext(Dispatchers.IO) {

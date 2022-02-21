@@ -5,7 +5,7 @@ import com.example.gasstations.data.storage.models.RefuelModel
 import com.example.gasstations.domain.repository.Repository
 import com.google.android.gms.maps.model.LatLng
 
-class AddStationUseCase(private val repository: Repository) {
+class AddRefuelUseCase(private val repository: Repository) {
 
     suspend fun execute(
         name: String,

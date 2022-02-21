@@ -15,7 +15,7 @@ import com.example.gasstations.data.core.App
 import com.example.gasstations.data.repository.RepositoryImpl
 import com.example.gasstations.data.storage.database.AppDatabase
 import com.example.gasstations.databinding.ActivityMapBinding
-import com.example.gasstations.domain.usecase.AddStationUseCase
+import com.example.gasstations.domain.usecase.AddRefuelUseCase
 import com.example.gasstations.domain.usecase.GetAllRefuelsUseCase
 import com.example.gasstations.domain.usecase.IsNearestExistUseCase
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -45,7 +45,6 @@ class MapActivity :
     private lateinit var placesClient: PlacesClient
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
-    private val defaultLocation = LatLng(50.395537692076516, 30.61595055046331)
     private var locationPermissionGranted = false
 
     private var lastKnownLocation: Location? = null
@@ -70,7 +69,7 @@ class MapActivity :
             )
         )
         mapViewModel = MapViewModel(
-            AddStationUseCase(repository),
+            AddRefuelUseCase(repository),
             IsNearestExistUseCase(repository),
             GetAllRefuelsUseCase(repository)
         )
@@ -99,15 +98,15 @@ class MapActivity :
         super.onSaveInstanceState(outState)
     }
 
+    @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
 
         googleMap.moveCamera(
             CameraUpdateFactory
-                .newLatLngZoom(defaultLocation, DEFAULT_ZOOM.toFloat())
+                .newLatLngZoom(DEFAULT_LOCATION, DEFAULT_ZOOM.toFloat())
         )
 
-        //getLocationPermission()
         updateLocationUI()
         getDeviceLocation()
     }
@@ -134,7 +133,7 @@ class MapActivity :
                         println("Exception: %s" + task.exception)
                         map.moveCamera(
                             CameraUpdateFactory
-                                .newLatLngZoom(defaultLocation, DEFAULT_ZOOM.toFloat())
+                                .newLatLngZoom(DEFAULT_LOCATION, DEFAULT_ZOOM.toFloat())
                         )
                         map.uiSettings.isMyLocationButtonEnabled = false
                     }
@@ -245,8 +244,9 @@ class MapActivity :
     }
 
     companion object {
-        private const val DEFAULT_ZOOM = 18
+        private const val DEFAULT_ZOOM = 16
         private const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
+        private val DEFAULT_LOCATION = LatLng(50.395537692076516, 30.61595055046331)
 
         private const val KEY_CAMERA_POSITION = "camera_position"
         private const val KEY_LOCATION = "location"

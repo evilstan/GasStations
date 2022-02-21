@@ -2,7 +2,7 @@ package com.example.gasstations.presentation.map_activity
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.gasstations.domain.usecase.AddStationUseCase
+import com.example.gasstations.domain.usecase.AddRefuelUseCase
 import com.example.gasstations.domain.usecase.GetAllRefuelsUseCase
 import com.example.gasstations.domain.usecase.IsNearestExistUseCase
 import com.example.gasstations.presentation.BaseViewModel
@@ -10,7 +10,7 @@ import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 
 class MapViewModel(
-    private val addStationUseCase: AddStationUseCase,
+    private val addRefuelUseCase: AddRefuelUseCase,
     private val isNearestExistUseCase: IsNearestExistUseCase,
     getAllRefuelsUseCase: GetAllRefuelsUseCase
 ) : BaseViewModel() {
@@ -30,7 +30,7 @@ class MapViewModel(
         fuelPrice: Double
     ) {
         viewModelScope.launch {
-            addStationUseCase.execute(
+            addRefuelUseCase.execute(
                 stationPosition,
                 fuelType,
                 fuelVolume,
@@ -47,7 +47,7 @@ class MapViewModel(
         fuelPrice: Double
     ) {
         viewModelScope.launch {
-            addStationUseCase.execute(
+            addRefuelUseCase.execute(
                 brand,
                 stationPosition,
                 fuelType,
