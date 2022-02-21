@@ -2,14 +2,14 @@ package com.example.gasstations.presentation.main_activity.list
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gasstations.R
+import com.example.gasstations.data.storage.models.RefuelModel
 import com.example.gasstations.databinding.ListItemBinding
-import com.example.gasstations.domain.models.RefuelDomain
 
 class RefuelsListViewHolder(private val binding: ListItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
     private val view = binding.root
 
-    fun setItem(refuelDomain: RefuelDomain) {
+    fun setItem(refuelDomain: RefuelModel) {
 
         val name = getString(R.string.brand) + refuelDomain.brand
 

@@ -2,9 +2,9 @@ package com.example.gasstations.data.storage.database
 
 import android.content.Context
 import androidx.room.*
-import com.example.gasstations.data.storage.models.RefuelCache
+import com.example.gasstations.data.storage.models.RefuelModel
 
-@Database(entities = [RefuelCache::class], version = 1, exportSchema = false)
+@Database(entities = [RefuelModel::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun refuelDao(): RefuelDao
 

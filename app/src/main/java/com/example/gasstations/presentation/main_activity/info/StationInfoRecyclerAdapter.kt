@@ -4,16 +4,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gasstations.databinding.StatisticsItemBinding
-import com.example.gasstations.domain.models.StationInfoDomain
+import com.example.gasstations.domain.models.StationInfoModel
 
 class StationInfoRecyclerAdapter :
     RecyclerView.Adapter<StationInfoViewHolder>() {
     private lateinit var binding: StatisticsItemBinding
-    private var dataset = emptyList<StationInfoDomain>()
+    private var dataset = emptyList<StationInfoModel>()
 
-    fun update(stationInfoDomains: List<StationInfoDomain>) {
-        dataset = stationInfoDomains
-        notifyDataSetChanged()
+    fun update(stationInfoModels: List<StationInfoModel>) {
+        dataset = stationInfoModels
+        notifyDataSetChanged() //TODO DiffUtils
     }
 
     override fun onCreateViewHolder(
