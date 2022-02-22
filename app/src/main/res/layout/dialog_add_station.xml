@@ -114,16 +114,16 @@
 
     <Button
       android:id="@+id/btn_cancel"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_column="0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="0"
       android:text="@string/cancel" />
 
     <Button
       android:id="@+id/btn_add"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_column="3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="3"
       android:text="@string/add" />
   </TableRow>
 </TableLayout>
