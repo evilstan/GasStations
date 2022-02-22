@@ -8,7 +8,7 @@ import com.example.gasstations.data.storage.models.RefuelCache
 interface RefuelDao {
 
     @Query("SELECT EXISTS (SELECT 1 FROM refuels WHERE id = :id)")
-    suspend fun contains(id: Int): Boolean
+    suspend fun contains(id: Long): Boolean
 
     @Query("SELECT * FROM refuels WHERE deleted = 0")
     fun allRefuels(): LiveData<List<RefuelCache>>
@@ -34,6 +34,6 @@ interface RefuelDao {
     suspend fun update(refuelCache: RefuelCache)
 
     @Query("DELETE FROM refuels WHERE id = :id")
-    suspend fun delete(id: Int)
+    suspend fun delete(id: Long)
 
 }

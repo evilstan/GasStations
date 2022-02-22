@@ -26,6 +26,9 @@ class RepositoryImpl(private val appDatabase: AppDatabase) : Repository {
     override suspend fun update(refuelCache: RefuelCache) =
         appDatabase.refuelDao().update(refuelCache)
 
-    override suspend fun delete(id: Int) =
+    override suspend fun delete(id: Long) =
         appDatabase.refuelDao().delete(id)
+
+    override suspend fun contains(id: Long) =
+        appDatabase.refuelDao().contains(id)
 }
