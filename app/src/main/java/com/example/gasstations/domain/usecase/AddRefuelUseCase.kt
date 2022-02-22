@@ -1,7 +1,7 @@
 package com.example.gasstations.domain.usecase
 
 import android.location.Location
-import com.example.gasstations.data.storage.models.RefuelModel
+import com.example.gasstations.data.storage.models.RefuelCache
 import com.example.gasstations.domain.repository.Repository
 import com.google.android.gms.maps.model.LatLng
 
@@ -15,7 +15,7 @@ class AddRefuelUseCase(private val repository: Repository) {
         fuelPrice: Double
     ) {
         repository.insert(
-            RefuelModel(
+            RefuelCache(
                 name,
                 stationPosition.latitude,
                 stationPosition.longitude,
@@ -38,7 +38,7 @@ class AddRefuelUseCase(private val repository: Repository) {
         )
         val nearestStation = findNearest(nearestStations, currentPosition)
         repository.insert(
-            RefuelModel(
+            RefuelCache(
                 nearestStation.brand,
                 nearestStation.latitude,
                 nearestStation.longitude,
@@ -49,7 +49,7 @@ class AddRefuelUseCase(private val repository: Repository) {
         )
     }
 
-    private fun findNearest(nearestStations: List<RefuelModel>, currentPosition: LatLng) =
+    private fun findNearest(nearestStations: List<RefuelCache>, currentPosition: LatLng) =
         nearestStations.minByOrNull {
             LatLng(it.latitude, it.longitude).distanceTo(currentPosition)
         }!!

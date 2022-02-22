@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "refuels")
-data class RefuelModel(
+data class RefuelCache(
     var brand: String,
     var latitude: Double,
     var longitude: Double,

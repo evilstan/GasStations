@@ -4,7 +4,7 @@ import com.google.firebase.database.IgnoreExtraProperties
 import java.io.Serializable
 
 @IgnoreExtraProperties
-data class RefuelFirebaseModel(
+data class RefuelCloud(
     val brand: String? = null,
     val latitude: Double? = null,
     val longitude: Double? = null,
@@ -13,3 +13,4 @@ data class RefuelFirebaseModel(
     val fuelPrice:Double? = null,
     val id: Int? = null
 )
+

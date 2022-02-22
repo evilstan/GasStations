@@ -14,12 +14,12 @@ import com.example.gasstations.R
 import com.example.gasstations.data.core.App
 import com.example.gasstations.data.repository.RepositoryImpl
 import com.example.gasstations.data.storage.database.AppDatabase
-import com.example.gasstations.data.storage.models.RefuelFirebaseModel
-import com.example.gasstations.data.storage.models.RefuelModel
-import com.example.gasstations.domain.usecase.DeleteRefuelUseCase
-import com.example.gasstations.domain.usecase.DeletedItemsUseCase
-import com.example.gasstations.domain.usecase.NewItemsUseCase
-import com.example.gasstations.domain.usecase.UpdateRefuelUseCase
+import com.example.gasstations.data.storage.models.RefuelCloud
+import com.example.gasstations.data.storage.models.RefuelCache
+import com.example.gasstations.domain.usecase.*
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
@@ -32,8 +32,10 @@ import java.util.concurrent.TimeUnit
 class RefuelsSyncService :
     LifecycleService() {
     private val defaultTitle = "Sync service working"
-    private val waitingTitle = "Sync service working"
+    private val waitingTitle = "Waiting fo internet connection"
     private val databasePath = "refuels"
+    private val channelId = "gas_stations"
+    private val channelName = "Gas_stations"
     private val databaseUrl =
         "https://gas-stations-775de-default-rtdb.europe-west1.firebasedatabase.app"
 
@@ -42,33 +44,69 @@ class RefuelsSyncService :
 
     private val repository = RepositoryImpl(AppDatabase.getInstance(App.instance))
     private val updateRefuelUseCase = UpdateRefuelUseCase(repository)
-    private val deleteRefuelUseCase = DeleteRefuelUseCase(repository)
+    private val deleteByServerUseCase = DeleteByServerUseCase(repository)
 
-    private val newItemsLiveData = NewItemsUseCase(repository).data
-    private val deletedItemsLiveData = DeletedItemsUseCase(repository).data
+    private val newItemsLiveData = GetNewItemsUseCase(repository).data
+    private val deletedItemsLiveData = GetDeletedItemsUseCase(repository).data
 
     private val database = Firebase.database(databaseUrl).getReference(databasePath)
-    private lateinit var startTime: Calendar
+    private var startTime = 0L
 
     override fun onCreate() {
         super.onCreate()
-        startTime = Calendar.getInstance()
+        startTime = System.currentTimeMillis()
         showTime()
 
         connectionManager = InternetConnection(applicationContext)
 
         newItemsLiveData.observe(this) { synchronize(it) }
         deletedItemsLiveData.observe(this) { synchronize(it) }
+
+        database.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+            }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                val refuel = snapshot.getValue(RefuelCloud::class.java)
+                GlobalScope.launch(Dispatchers.Main) {
+                    withContext(Dispatchers.IO) {
+                        if (refuel != null) {
+                            updateRefuelUseCase.execute(mapToCache(refuel))
+                        }
+                    }
+                }
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                val refuel = snapshot.getValue(RefuelCloud::class.java)
+                GlobalScope.launch(Dispatchers.Main) {
+                    withContext(Dispatchers.IO) {
+                        if (refuel != null) {
+                            deleteByServerUseCase.execute(refuel.id!!)
+                        }
+                    }
+                }
+            }
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                throw error.toException()
+            }
+        })
     }
 
-    private fun synchronize(refuels: List<RefuelModel>) {
+    private fun synchronize(refuels: List<RefuelCache>) {
         connectionManager.listen(object : InternetConnection.ConnectionListener {
             override fun updateConnected(connected: Boolean) {
                 if (connected) {
                     title = defaultTitle
                     refuels.forEach {
                         if (it.deleted) {
-                            syncDeletedItems(it)
+                            database.child(it.id.toString())
+                                .removeValue()
                         }
                         if (!it.uploaded) {
                             syncNewItems(it)
@@ -81,57 +119,59 @@ class RefuelsSyncService :
         })
     }
 
-    private fun syncNewItems(refuelModel: RefuelModel) {
-        database.child(refuelModel.id.toString()).setValue(map(refuelModel))
+    private fun syncNewItems(refuelCache: RefuelCache) {
+        database.child(refuelCache.id.toString())
+            .setValue(mapToCloud(refuelCache))
             .addOnSuccessListener {
-                refuelModel.uploaded = true
+                refuelCache.uploaded = true
                 GlobalScope.launch(Dispatchers.Main) {
                     withContext(Dispatchers.IO) {
-                        updateRefuelUseCase.execute(refuelModel)
+                        updateRefuelUseCase.execute(refuelCache)
                     }
                 }
             }
     }
 
-    private fun syncDeletedItems(refuelModel: RefuelModel) {
-        database.child(refuelModel.id.toString()).removeValue()
-            .addOnSuccessListener {
-                GlobalScope.launch(Dispatchers.Main) {
-                    withContext(Dispatchers.IO) {
-                        deleteRefuelUseCase.execute(refuelModel)
-                    }
-                }
-            }
-    }
+    private fun mapToCloud(refuelCache: RefuelCache) =
+        RefuelCloud(
+            refuelCache.brand,
+            refuelCache.latitude,
+            refuelCache.longitude,
+            refuelCache.fuelType,
+            refuelCache.fuelVolume,
+            refuelCache.fuelPrice,
+            refuelCache.id
+        )
 
-    private fun map(refuelModel: RefuelModel) =
-        RefuelFirebaseModel(
-            refuelModel.brand,
-            refuelModel.latitude,
-            refuelModel.longitude,
-            refuelModel.fuelType,
-            refuelModel.fuelVolume,
-            refuelModel.fuelPrice,
-            refuelModel.id
+    private fun mapToCache(refuelCloud: RefuelCloud) =
+        RefuelCache(
+            refuelCloud.brand!!,
+            refuelCloud.latitude!!,
+            refuelCloud.longitude!!,
+            refuelCloud.fuelType!!,
+            refuelCloud.fuelVolume!!,
+            refuelCloud.fuelPrice!!,
+            refuelCloud.id!!
         )
 
     private fun showTime() {
 
         Timer().schedule(object : TimerTask() {
             override fun run() {
-                val millis = Calendar.getInstance().timeInMillis - startTime.timeInMillis
-                val time = String.format("%02d:%02d:%02d",
+                val millis = System.currentTimeMillis() - startTime
+                val time = String.format(
+                    "%02d:%02d:%02d",
                     TimeUnit.MILLISECONDS.toHours(millis),
-                    TimeUnit.MILLISECONDS.toMinutes(millis)-
+                    TimeUnit.MILLISECONDS.toMinutes(millis) -
                             TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
                     TimeUnit.MILLISECONDS.toSeconds(millis) -
                             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
-                );
+                )
                 startForeground(101, notification(title, time))
 
             }
 
-        }, 0,1000)
+        }, 0, 1000)
     }
 
     private fun notification(
@@ -140,7 +180,7 @@ class RefuelsSyncService :
     ): Notification {
         val channelId =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                createNotificationChannel("my_service", "My Background Service")
+                createNotificationChannel(channelId, channelName)
             } else {
                 ""
             }

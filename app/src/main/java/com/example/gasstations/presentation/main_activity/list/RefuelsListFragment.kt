@@ -9,11 +9,11 @@ import androidx.fragment.app.Fragment
 import com.example.gasstations.data.core.App
 import com.example.gasstations.data.repository.RepositoryImpl
 import com.example.gasstations.data.storage.database.AppDatabase
-import com.example.gasstations.data.storage.models.RefuelModel
+import com.example.gasstations.data.storage.models.RefuelCache
 import com.example.gasstations.databinding.FragmentStationsListBinding
-import com.example.gasstations.domain.usecase.DeleteRefuelUseCase
+import com.example.gasstations.domain.usecase.DeleteByLocalUseCase
 import com.example.gasstations.domain.usecase.GetAllRefuelsUseCase
-import com.example.gasstations.domain.usecase.NewItemsUseCase
+import com.example.gasstations.domain.usecase.GetNewItemsUseCase
 import com.example.gasstations.presentation.map_activity.MapActivity
 
 class RefuelsListFragment : Fragment(),
@@ -39,8 +39,8 @@ class RefuelsListFragment : Fragment(),
 
         viewModel = RefuelsListViewModel(
             GetAllRefuelsUseCase(repository),
-            DeleteRefuelUseCase(repository),
-            NewItemsUseCase(repository)
+            DeleteByLocalUseCase(repository),
+            GetNewItemsUseCase(repository)
         )
 
         adapter = RefuelsListRecyclerAdapter(emptyList(), this,this)
@@ -50,8 +50,8 @@ class RefuelsListFragment : Fragment(),
         binding.addFb.setOnClickListener(this)
     }
 
-    override fun onLongClick(refuelModel: RefuelModel): Boolean {
-        viewModel.deleteStation(refuelModel)
+    override fun onLongClick(refuelCache: RefuelCache): Boolean {
+        viewModel.deleteStation(refuelCache)
         return true
     }
 
@@ -60,12 +60,12 @@ class RefuelsListFragment : Fragment(),
         startActivity(intent)
     }
 
-    override fun onClick(refuelModel: RefuelModel): Boolean {
-        EditRefuelDialog(this,refuelModel).show(childFragmentManager,"")
+    override fun onClick(refuelCache: RefuelCache): Boolean {
+        EditRefuelDialog(this,refuelCache).show(childFragmentManager,"")
         return true
     }
 
-    override fun onChange(refuelModel: RefuelModel) {
+    override fun onChange(refuelCache: RefuelCache) {
         //TODO
     }
 }

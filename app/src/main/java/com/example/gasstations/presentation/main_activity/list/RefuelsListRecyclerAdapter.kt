@@ -3,12 +3,12 @@ package com.example.gasstations.presentation.main_activity.list
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.gasstations.data.storage.models.RefuelModel
+import com.example.gasstations.data.storage.models.RefuelCache
 import com.example.gasstations.databinding.ListItemBinding
 
 
 class RefuelsListRecyclerAdapter(
-    private var dataset: List<RefuelModel>,
+    private var dataset: List<RefuelCache>,
     private val onRefuelLongClickListener: OnRefuelLongClickListener,
     private val onRefuelClickListener: OnRefuelClickListener
 
@@ -17,7 +17,7 @@ class RefuelsListRecyclerAdapter(
 
     lateinit var binding: ListItemBinding
 
-    fun update( refuels:List<RefuelModel>) {
+    fun update( refuels:List<RefuelCache>) {
         dataset = refuels
         notifyDataSetChanged() //TODO Diffutils
     }

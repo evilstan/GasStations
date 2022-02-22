@@ -1,20 +1,20 @@
 package com.example.gasstations.domain.repository
 
 import androidx.lifecycle.LiveData
-import com.example.gasstations.data.storage.models.RefuelModel
+import com.example.gasstations.data.storage.models.RefuelCache
 
 interface Repository {
-    fun refuels(): LiveData<List<RefuelModel>>
+    fun allRefuels(): LiveData<List<RefuelCache>>
 
-    fun newItems(): LiveData<List<RefuelModel>>
+    fun newRefuels(): LiveData<List<RefuelCache>>
 
-    fun deletedItems(): LiveData<List<RefuelModel>>
+    fun deletedRefuels(): LiveData<List<RefuelCache>>
 
-    suspend fun nearest(latitude: Double, longitude: Double): List<RefuelModel>
+    suspend fun nearest(latitude: Double, longitude: Double): List<RefuelCache>
 
-    suspend fun insert(refuelModel: RefuelModel)
+    suspend fun insert(refuelCache: RefuelCache)
 
-    suspend fun update(refuelModel: RefuelModel)
+    suspend fun update(refuelCache: RefuelCache)
 
-    suspend fun delete(refuelModel: RefuelModel)
+    suspend fun delete(id: Int)
 }
