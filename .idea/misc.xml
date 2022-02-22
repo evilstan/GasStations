@@ -5,6 +5,9 @@
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3585200625325691" />
         <entry key="app/src/main/res/layout/activity_map.xml" value="0.3546195652173913" />
+        <entry key="app/src/main/res/layout/dialog_add_refuel.xml" value="0.18020833333333333" />
+        <entry key="app/src/main/res/layout/dialog_add_station.xml" value="0.35208333333333336" />
+        <entry key="app/src/main/res/layout/dialog_edit_refuel.xml" value="0.276268115942029" />
         <entry key="app/src/main/res/layout/fragment_gas_station_info.xml" value="0.23772609819121446" />
         <entry key="app/src/main/res/layout/fragment_gas_stations_list.xml" value="0.35833333333333334" />
         <entry key="app/src/main/res/layout/fragment_map.xml" value="0.3546195652173913" />

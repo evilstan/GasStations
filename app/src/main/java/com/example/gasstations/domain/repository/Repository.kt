@@ -4,6 +4,9 @@ import androidx.lifecycle.LiveData
 import com.example.gasstations.data.storage.models.RefuelCache
 
 interface Repository {
+
+    suspend fun refuel(id: Long): RefuelCache
+
     fun allRefuels(): LiveData<List<RefuelCache>>
 
     fun newRefuels(): LiveData<List<RefuelCache>>
@@ -12,7 +15,7 @@ interface Repository {
 
     suspend fun nearest(latitude: Double, longitude: Double): List<RefuelCache>
 
-    suspend fun contains(id: Long):Boolean
+    suspend fun contains(id: Long): Boolean
 
     suspend fun insert(refuelCache: RefuelCache)
 

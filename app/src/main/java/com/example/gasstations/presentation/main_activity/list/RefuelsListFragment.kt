@@ -14,6 +14,7 @@ import com.example.gasstations.databinding.FragmentStationsListBinding
 import com.example.gasstations.domain.usecase.DeleteByLocalUseCase
 import com.example.gasstations.domain.usecase.GetAllRefuelsUseCase
 import com.example.gasstations.domain.usecase.GetNewItemsUseCase
+import com.example.gasstations.domain.usecase.UpdateRefuelUseCase
 import com.example.gasstations.presentation.map_activity.MapActivity
 
 class RefuelsListFragment : Fragment(),
@@ -40,7 +41,7 @@ class RefuelsListFragment : Fragment(),
         viewModel = RefuelsListViewModel(
             GetAllRefuelsUseCase(repository),
             DeleteByLocalUseCase(repository),
-            GetNewItemsUseCase(repository)
+            UpdateRefuelUseCase(repository)
         )
 
         adapter = RefuelsListRecyclerAdapter(emptyList(), this,this)
@@ -65,7 +66,6 @@ class RefuelsListFragment : Fragment(),
         return true
     }
 
-    override fun onChange(refuelCache: RefuelCache) {
-        //TODO
-    }
+    override fun onChange(refuelCache: RefuelCache) =
+       viewModel.updateStation(refuelCache)
 }

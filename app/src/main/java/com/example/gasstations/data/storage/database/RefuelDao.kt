@@ -7,6 +7,9 @@ import com.example.gasstations.data.storage.models.RefuelCache
 @Dao
 interface RefuelDao {
 
+    @Query("SELECT *FROM refuels WHERE id =:id")
+    suspend fun refuel(id: Long): RefuelCache
+
     @Query("SELECT EXISTS (SELECT 1 FROM refuels WHERE id = :id)")
     suspend fun contains(id: Long): Boolean
 

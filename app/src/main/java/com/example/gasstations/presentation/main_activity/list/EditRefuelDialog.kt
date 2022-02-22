@@ -9,7 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.gasstations.R
 import com.example.gasstations.data.storage.models.RefuelCache
-import com.example.gasstations.databinding.DialogChangeRefuelBinding
+import com.example.gasstations.databinding.DialogEditRefuelBinding
 import com.example.gasstations.presentation.MoneyFuelInputFilter
 
 class EditRefuelDialog(
@@ -18,14 +18,14 @@ class EditRefuelDialog(
 ) :
     DialogFragment() {
 
-    private var _binding: DialogChangeRefuelBinding? = null
+    private var _binding: DialogEditRefuelBinding? = null
     private val binding get() = _binding!!
     private lateinit var dialog: AlertDialog
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         super.onCreate(savedInstanceState)
-        _binding = DialogChangeRefuelBinding.inflate(layoutInflater)
+        _binding = DialogEditRefuelBinding.inflate(layoutInflater)
         dialog = AlertDialog.Builder(requireActivity())
             .setView(binding.root)
             .create()
@@ -47,7 +47,6 @@ class EditRefuelDialog(
             true
         }
 
-        binding.editBrand.setText(refuelCache.brand)
         binding.spinnerFuelType.setSelection(
             resources.getStringArray(R.array.fuel_types)
                 .indexOf(refuelCache.fuelType)
@@ -61,9 +60,6 @@ class EditRefuelDialog(
 
     private fun addStation() {
         when {
-            binding.editBrand.text.isNullOrEmpty() || binding.editBrand.text.isBlank() -> {
-                binding.editBrand.requestFocus()
-            }
             binding.editVolume.text.isNullOrEmpty() -> {
                 binding.editVolume.requestFocus()
             }
@@ -71,13 +67,31 @@ class EditRefuelDialog(
                 binding.editPrice.requestFocus()
             }
             else -> {
-/*                onRefuelChangedListener.onChange(
-                    binding.editBrand.text.toString(),
-                    binding.spinnerFuelType.selectedItem.toString(),
-                    binding.editVolume.text.toString().toDouble(),
-                    binding.editPrice.text.toString().toDouble()
-                )*/
-                dialog.cancel()
+                val type = binding.spinnerFuelType.selectedItem.toString()
+                val volume = binding.editVolume.text.toString().toDouble()
+                val price = binding.editPrice.text.toString().toDouble()
+
+                if (type == refuelCache.fuelType &&
+                    volume == refuelCache.fuelVolume &&
+                    price == refuelCache.fuelPrice
+                ) {
+                    dialog.cancel()
+                } else {
+                    onRefuelChangedListener.onChange(
+                        RefuelCache(
+                            refuelCache.brand,
+                            refuelCache.latitude,
+                            refuelCache.longitude,
+                            type,
+                            volume,
+                            price,
+                            refuelCache.id,
+                            uploaded = false,
+                            deleted = false
+                        )
+                    )
+                    dialog.cancel()
+                }
             }
         }
     }

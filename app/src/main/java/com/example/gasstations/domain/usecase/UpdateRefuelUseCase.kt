@@ -5,6 +5,7 @@ import com.example.gasstations.domain.repository.Repository
 
 class UpdateRefuelUseCase(private val repository: Repository) {
     suspend fun execute(refuelCache: RefuelCache) {
-        repository.update(refuelCache)
+        if (repository.refuel(refuelCache.id) != refuelCache)
+            repository.update(refuelCache)
     }
 }
