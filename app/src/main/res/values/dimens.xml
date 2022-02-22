@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="info_text_size">16sp</dimen>
-
-    <dimen name="info_header_weight">0.5</dimen>
-    <dimen name="info_value_weight">1</dimen>
-
     <dimen name="recycler_margin">4dp</dimen>
 
     <dimen name="floating_action_button_margin_bottom">32dp</dimen>

@@ -22,7 +22,6 @@ class RefuelsListRecyclerAdapter(
         notifyDataSetChanged() //TODO Diffutils
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RefuelsListViewHolder {
         binding = ListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return RefuelsListViewHolder(binding)

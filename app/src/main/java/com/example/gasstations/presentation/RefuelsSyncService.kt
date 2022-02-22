@@ -4,6 +4,7 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -20,6 +21,7 @@ import com.example.gasstations.domain.usecase.*
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
@@ -31,18 +33,9 @@ import java.util.concurrent.TimeUnit
 
 class RefuelsSyncService :
     LifecycleService() {
-    private val defaultTitle = "Sync service working"
-    private val waitingTitle = "Waiting fo internet connection"
-    private val databasePath = "refuels"
-    private val channelId = "gas_stations"
-    private val channelName = "Gas_stations"
-    private val databaseUrl =
-        "https://gas-stations-775de-default-rtdb.europe-west1.firebasedatabase.app"
-
-    private lateinit var connectionManager: InternetConnection
-    private var title = defaultTitle
 
     private val repository = RepositoryImpl(AppDatabase.getInstance(App.instance))
+
     private val updateRefuelUseCase = UpdateRefuelUseCase(repository)
     private val deleteByServerUseCase = DeleteByServerUseCase(repository)
     private val addRefuelUseCase = AddRefuelUseCase(repository)
@@ -50,15 +43,23 @@ class RefuelsSyncService :
     private val newItemsLiveData = GetNewItemsUseCase(repository).data
     private val deletedItemsLiveData = GetDeletedItemsUseCase(repository).data
 
-    private val database = Firebase.database(databaseUrl).getReference(databasePath)
+    private lateinit var database: DatabaseReference
+
     private var startTime = 0L
     private lateinit var listener: ChildEventListener
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        super.onStartCommand(intent, flags, startId)
+        return START_STICKY
+    }
 
     override fun onCreate() {
         super.onCreate()
         startTime = System.currentTimeMillis()
-        connectionManager = InternetConnection(applicationContext)
         showTime()
+        database = Firebase
+            .database(resources.getString(R.string.database_url))
+            .getReference(resources.getString(R.string.database_path))
 
         newItemsLiveData.observe(this) { syncNew(it) }
         deletedItemsLiveData.observe(this) { syncDeleted(it) }
@@ -156,20 +157,23 @@ class RefuelsSyncService :
 
 
     private fun showTime() {
-        connectionManager.listen(object : InternetConnection.ConnectionListener {
-            override fun updateConnected(connected: Boolean) {
-                title = if (connected)
-                    defaultTitle
-                else
-                    waitingTitle
-            }
-        })
+        var title = ""
+
+        InternetConnection(applicationContext)
+            .listen(object : InternetConnection.ConnectionListener {
+                override fun updateConnected(connected: Boolean) {
+                    title = if (connected)
+                        resources.getString(R.string.default_title)
+                    else
+                        resources.getString(R.string.waiting_title)
+                }
+            })
 
         Timer().schedule(object : TimerTask() {
             override fun run() {
                 val millis = System.currentTimeMillis() - startTime
                 val time = String.format(
-                    "%02d:%02d:%02d",
+                    TIME_FORMAT_REGEX,
                     TimeUnit.MILLISECONDS.toHours(millis),
                     TimeUnit.MILLISECONDS.toMinutes(millis) -
                             TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
@@ -189,7 +193,10 @@ class RefuelsSyncService :
     ): Notification {
         val channelId =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                createNotificationChannel(channelId, channelName)
+                createNotificationChannel(
+                    resources.getString(R.string.notification_channel_id),
+                    resources.getString(R.string.notification_channel_name)
+                )
             } else {
                 ""
             }
@@ -215,5 +222,10 @@ class RefuelsSyncService :
         val service = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         service.createNotificationChannel(channel)
         return channelId
+    }
+
+    companion object {
+        private const val TIME_FORMAT_REGEX = "%02d:%02d:%02d"
+
     }
 }

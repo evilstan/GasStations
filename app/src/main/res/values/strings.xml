@@ -1,8 +1,13 @@
 <resources>
   <string name="app_name">Gas Stations</string>
   <string name="map_activity_title">Add refuel</string>
-  <string name="maps_api_key">AIzaSyDK2TvMDlK4LnwMAkGWpHlBlxApaKQU-sY</string>
 
+  <string name="default_title">Sync service working</string>
+  <string name="waiting_title">Waiting fo internet connection</string>
+  <string name="database_path">refuels</string>
+  <string name="notification_channel_id">gas_stations</string>
+  <string name="notification_channel_name">gas_stations</string>
+  <string name="database_url">"https://gas-stations-775de-default-rtdb.europe-west1.firebasedatabase.app"</string>
 
 
   <string name="refuels_list">Refuels list</string>
@@ -18,14 +23,10 @@
 
   <string name="add_refuel">Add new refuel</string>
   <string name="refuel">Refuel</string>
-  <string name="add_station">Add new gas station</string>
   <string name="fuel_price">Price per gallon:</string>
   <string name="fuel_type">Fuel type:</string>
-  <string name="brand_hint">Fuel supplier brand:</string>
-  <string name="fuel_amount_hint">Fuel volume in gallons:</string>
 
   <string name="edit_refuel">Edit refuel</string>
-  <string name="change_location">Change location</string>
   <string name="add">Add</string>
   <string name="update">Update</string>
   <string name="cancel">Cancel</string>

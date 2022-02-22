@@ -1,12 +1,10 @@
 package com.example.gasstations.presentation.main_activity
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.example.gasstations.R
 import com.example.gasstations.databinding.ActivityMainBinding
-import com.example.gasstations.presentation.RefuelsSyncService
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -19,7 +17,6 @@ class MainActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
         tabLayout = binding.tabLayout
         viewPager = binding.pager
