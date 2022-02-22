@@ -57,13 +57,11 @@ class RefuelsSyncService :
     override fun onCreate() {
         super.onCreate()
         startTime = System.currentTimeMillis()
+        connectionManager = InternetConnection(applicationContext)
         showTime()
 
-        connectionManager = InternetConnection(applicationContext)
-
-        newItemsLiveData.observe(this) {
-            upload(it) }
-        deletedItemsLiveData.observe(this) { upload(it) }
+        newItemsLiveData.observe(this) { syncNew(it) }
+        deletedItemsLiveData.observe(this) { syncDeleted(it) }
 
         listener = (object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
@@ -107,42 +105,31 @@ class RefuelsSyncService :
                 throw error.toException()
             }
         })
+        database.addChildEventListener(listener)
     }
 
-    private fun upload(refuels: List<RefuelCache>) {
-        connectionManager.listen(object : InternetConnection.ConnectionListener {
-            override fun updateConnected(connected: Boolean) {
-                if (connected) {
-                    database.addChildEventListener(listener)
-                    title = defaultTitle
-                    refuels.forEach { syncRefuels(it) }
-                } else {
-                    database.removeEventListener(listener)
-                    title = waitingTitle
-                }
-            }
-        })
-    }
-
-    private fun syncRefuels(refuelCache: RefuelCache) {
-        if (refuelCache.deleted) {
-            database.child(refuelCache.id.toString())
-                .removeValue()
-        }
-
-        if (!refuelCache.uploaded) {
-            database.child(refuelCache.id.toString())
-                .setValue(mapToCloud(refuelCache))
-                .addOnSuccessListener {
-                    refuelCache.uploaded = true
-                    GlobalScope.launch(Dispatchers.Main) {
-                        withContext(Dispatchers.IO) {
-                            updateRefuelUseCase.execute(refuelCache)
+    private fun syncNew(refuels: List<RefuelCache>) {
+        refuels.forEach { refuelCache ->
+            if (!refuelCache.uploaded) {
+                database.child(refuelCache.id.toString())
+                    .setValue(mapToCloud(refuelCache))
+                    .addOnSuccessListener {
+                        refuelCache.uploaded = true
+                        GlobalScope.launch(Dispatchers.Main) {
+                            withContext(Dispatchers.IO) {
+                                updateRefuelUseCase.execute(refuelCache)
+                            }
                         }
                     }
-                }
+            }
         }
+    }
 
+    private fun syncDeleted(refuels: List<RefuelCache>) {
+        refuels.forEach {
+            database.child(it.id.toString())
+                .removeValue()
+        }
     }
 
     private fun mapToCloud(refuelCache: RefuelCache) =
@@ -167,7 +154,16 @@ class RefuelsSyncService :
             refuelCloud.id!!
         )
 
+
     private fun showTime() {
+        connectionManager.listen(object : InternetConnection.ConnectionListener {
+            override fun updateConnected(connected: Boolean) {
+                title = if (connected)
+                    defaultTitle
+                else
+                    waitingTitle
+            }
+        })
 
         Timer().schedule(object : TimerTask() {
             override fun run() {
