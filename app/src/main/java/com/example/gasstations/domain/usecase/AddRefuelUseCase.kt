@@ -7,6 +7,12 @@ import com.google.android.gms.maps.model.LatLng
 
 class AddRefuelUseCase(private val repository: Repository) {
 
+    suspend fun execute(refuelCache: RefuelCache) {
+        if (!repository.contains(refuelCache.id)) {
+            repository.insert(refuelCache)
+        }
+    }
+
     suspend fun execute(
         name: String,
         stationPosition: LatLng,
@@ -21,7 +27,8 @@ class AddRefuelUseCase(private val repository: Repository) {
                 stationPosition.longitude,
                 fuelType,
                 fuelVolume,
-                fuelPrice
+                fuelPrice,
+                id = System.currentTimeMillis()
             )
         )
     }
@@ -44,7 +51,8 @@ class AddRefuelUseCase(private val repository: Repository) {
                 nearestStation.longitude,
                 fuelType,
                 fuelVolume,
-                fuelPrice
+                fuelPrice,
+                id = System.currentTimeMillis()
             )
         )
     }

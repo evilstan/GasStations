@@ -11,6 +11,6 @@ data class RefuelCloud(
     val fuelType:String? = null,
     val fuelVolume: Double? = null,
     val fuelPrice:Double? = null,
-    val id: Int? = null
+    val id: Long? = null
 )
 

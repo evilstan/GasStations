@@ -54,6 +54,8 @@ class MapActivity :
         binding = ActivityMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        this.title = resources.getString(R.string.map_activity_title)
+
         if (savedInstanceState != null) {
             lastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION)
             cameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION)

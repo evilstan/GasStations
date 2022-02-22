@@ -45,12 +45,14 @@ class RefuelsSyncService :
     private val repository = RepositoryImpl(AppDatabase.getInstance(App.instance))
     private val updateRefuelUseCase = UpdateRefuelUseCase(repository)
     private val deleteByServerUseCase = DeleteByServerUseCase(repository)
+    private val addRefuelUseCase = AddRefuelUseCase(repository)
 
     private val newItemsLiveData = GetNewItemsUseCase(repository).data
     private val deletedItemsLiveData = GetDeletedItemsUseCase(repository).data
 
     private val database = Firebase.database(databaseUrl).getReference(databasePath)
     private var startTime = 0L
+    private lateinit var listener:ChildEventListener
 
     override fun onCreate() {
         super.onCreate()
@@ -59,11 +61,20 @@ class RefuelsSyncService :
 
         connectionManager = InternetConnection(applicationContext)
 
-        newItemsLiveData.observe(this) { synchronize(it) }
-        deletedItemsLiveData.observe(this) { synchronize(it) }
+        newItemsLiveData.observe(this) { update(it) }
+        deletedItemsLiveData.observe(this) { update(it) }
 
-        database.addChildEventListener(object : ChildEventListener {
+        listener= (object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val refuel = snapshot.getValue(RefuelCloud::class.java)
+
+                GlobalScope.launch(Dispatchers.Main) {
+                    withContext(Dispatchers.IO) {
+                        if (refuel != null) {
+                            addRefuelUseCase.execute(mapToCache(refuel))
+                        }
+                    }
+                }
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
@@ -98,38 +109,40 @@ class RefuelsSyncService :
         })
     }
 
-    private fun synchronize(refuels: List<RefuelCache>) {
+    private fun update(refuels: List<RefuelCache>) {
         connectionManager.listen(object : InternetConnection.ConnectionListener {
             override fun updateConnected(connected: Boolean) {
                 if (connected) {
+                    database.addChildEventListener(listener)
                     title = defaultTitle
-                    refuels.forEach {
-                        if (it.deleted) {
-                            database.child(it.id.toString())
-                                .removeValue()
-                        }
-                        if (!it.uploaded) {
-                            syncNewItems(it)
-                        }
-                    }
+                    refuels.forEach { syncRefuels(it) }
                 } else {
+                    database.removeEventListener(listener)
                     title = waitingTitle
                 }
             }
         })
     }
 
-    private fun syncNewItems(refuelCache: RefuelCache) {
-        database.child(refuelCache.id.toString())
-            .setValue(mapToCloud(refuelCache))
-            .addOnSuccessListener {
-                refuelCache.uploaded = true
-                GlobalScope.launch(Dispatchers.Main) {
-                    withContext(Dispatchers.IO) {
-                        updateRefuelUseCase.execute(refuelCache)
+    private fun syncRefuels(refuelCache: RefuelCache) {
+        if (refuelCache.deleted) {
+            database.child(refuelCache.id.toString())
+                .removeValue()
+        }
+
+        if (!refuelCache.uploaded) {
+            database.child(refuelCache.id.toString())
+                .setValue(mapToCloud(refuelCache))
+                .addOnSuccessListener {
+                    refuelCache.uploaded = true
+                    GlobalScope.launch(Dispatchers.Main) {
+                        withContext(Dispatchers.IO) {
+                            updateRefuelUseCase.execute(refuelCache)
+                        }
                     }
                 }
-            }
+        }
+
     }
 
     private fun mapToCloud(refuelCache: RefuelCache) =

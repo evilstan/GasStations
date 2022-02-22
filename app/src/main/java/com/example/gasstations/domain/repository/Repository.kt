@@ -12,9 +12,11 @@ interface Repository {
 
     suspend fun nearest(latitude: Double, longitude: Double): List<RefuelCache>
 
+    suspend fun contains(id: Long):Boolean
+
     suspend fun insert(refuelCache: RefuelCache)
 
     suspend fun update(refuelCache: RefuelCache)
 
-    suspend fun delete(id: Int)
+    suspend fun delete(id: Long)
 }
