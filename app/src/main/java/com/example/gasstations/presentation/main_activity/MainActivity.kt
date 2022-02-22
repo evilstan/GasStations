@@ -35,7 +35,5 @@ class MainActivity : FragmentActivity() {
             tab.text = text
         }.attach()
 
-        val intent = Intent(this, RefuelsSyncService::class.java)
-        startService(intent)
     }
 }
