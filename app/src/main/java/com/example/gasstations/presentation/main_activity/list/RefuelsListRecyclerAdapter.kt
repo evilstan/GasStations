@@ -2,9 +2,11 @@ package com.example.gasstations.presentation.main_activity.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gasstations.data.storage.models.RefuelCache
 import com.example.gasstations.databinding.ListItemBinding
+import com.example.gasstations.presentation.main_activity.DiffUtilsCallback
 
 
 class RefuelsListRecyclerAdapter(
@@ -15,11 +17,13 @@ class RefuelsListRecyclerAdapter(
 ) :
     RecyclerView.Adapter<RefuelsListViewHolder>() {
 
-    lateinit var binding: ListItemBinding
+    private lateinit var binding: ListItemBinding
 
-    fun update( refuels:List<RefuelCache>) {
+    fun update(refuels:List<RefuelCache>) {
+        val diffUtilsCallback = DiffUtilsCallback(dataset, refuels)
+        val diffResult = DiffUtil.calculateDiff(diffUtilsCallback)
         dataset = refuels
-        notifyDataSetChanged() //TODO Diffutils
+        diffResult.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RefuelsListViewHolder {

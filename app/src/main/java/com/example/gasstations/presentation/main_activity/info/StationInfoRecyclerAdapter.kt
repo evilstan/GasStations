@@ -2,9 +2,11 @@ package com.example.gasstations.presentation.main_activity.info
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gasstations.databinding.StatisticsItemBinding
 import com.example.gasstations.domain.models.StationInfoModel
+import com.example.gasstations.presentation.main_activity.DiffUtilsCallback
 
 class StationInfoRecyclerAdapter :
     RecyclerView.Adapter<StationInfoViewHolder>() {
@@ -12,8 +14,10 @@ class StationInfoRecyclerAdapter :
     private var dataset = emptyList<StationInfoModel>()
 
     fun update(stationInfoModels: List<StationInfoModel>) {
+        val diffUtilsCallback = DiffUtilsCallback(dataset, stationInfoModels)
+        val diffResult = DiffUtil.calculateDiff(diffUtilsCallback)
         dataset = stationInfoModels
-        notifyDataSetChanged() //TODO DiffUtils
+        diffResult.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(
