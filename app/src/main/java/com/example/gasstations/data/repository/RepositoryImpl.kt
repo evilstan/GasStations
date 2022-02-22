@@ -8,6 +8,9 @@ private const val DELTA = 0.001 //approx. +-120 meters
 
 class RepositoryImpl(private val appDatabase: AppDatabase) : Repository {
 
+    override suspend fun refuel(id: Long) =
+        appDatabase.refuelDao().refuel(id)
+
     override fun allRefuels() =
         appDatabase.refuelDao().allRefuels()
 

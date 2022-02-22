@@ -11,8 +11,8 @@ data class RefuelCache(
     var fuelType:String,
     var fuelVolume: Double,
     var fuelPrice:Double,
-    @PrimaryKey()
-    var id: Long = 0,
+    @PrimaryKey
+    var id: Long,
     var uploaded: Boolean = false,
     var deleted: Boolean = false
 )

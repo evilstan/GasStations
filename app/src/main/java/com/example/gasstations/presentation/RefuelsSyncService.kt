@@ -52,7 +52,7 @@ class RefuelsSyncService :
 
     private val database = Firebase.database(databaseUrl).getReference(databasePath)
     private var startTime = 0L
-    private lateinit var listener:ChildEventListener
+    private lateinit var listener: ChildEventListener
 
     override fun onCreate() {
         super.onCreate()
@@ -61,13 +61,13 @@ class RefuelsSyncService :
 
         connectionManager = InternetConnection(applicationContext)
 
-        newItemsLiveData.observe(this) { update(it) }
-        deletedItemsLiveData.observe(this) { update(it) }
+        newItemsLiveData.observe(this) {
+            upload(it) }
+        deletedItemsLiveData.observe(this) { upload(it) }
 
-        listener= (object : ChildEventListener {
+        listener = (object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val refuel = snapshot.getValue(RefuelCloud::class.java)
-
                 GlobalScope.launch(Dispatchers.Main) {
                     withContext(Dispatchers.IO) {
                         if (refuel != null) {
@@ -109,7 +109,7 @@ class RefuelsSyncService :
         })
     }
 
-    private fun update(refuels: List<RefuelCache>) {
+    private fun upload(refuels: List<RefuelCache>) {
         connectionManager.listen(object : InternetConnection.ConnectionListener {
             override fun updateConnected(connected: Boolean) {
                 if (connected) {

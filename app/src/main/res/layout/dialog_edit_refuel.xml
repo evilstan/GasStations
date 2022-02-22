@@ -24,29 +24,6 @@
     android:layout_height="match_parent">
 
     <TextView
-      android:id="@+id/fuel_brand"
-      style="@style/dialog_main_text_style"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:paddingRight="10dp"
-      android:text="@string/brand" />
-
-    <EditText
-      android:id="@+id/edit_brand"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_span="3"
-      android:ems="10"
-      android:inputType="textCapWords"
-      android:imeOptions="actionNext"
-      android:nextFocusForward="@id/edit_volume"/>
-  </TableRow>
-
-  <TableRow
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
       android:id="@+id/text_fuel_type"
       style="@style/dialog_main_text_style"
       android:layout_width="wrap_content"
@@ -112,25 +89,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-      android:id="@+id/btn_change_location"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_weight="2"
-      android:text="@string/change_location" />
 
     <Button
       android:id="@+id/btn_cancel"
-      android:layout_width="0dp"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_weight="1"
+      android:layout_column="0"
+        android:layout_gravity="left"
       android:text="@string/cancel" />
 
     <Button
       android:id="@+id/btn_update"
-      android:layout_width="0dp"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_weight="1"
+        android:layout_gravity="right"
+      android:layout_column="1"
       android:text="@string/update" />
   </TableRow>
 

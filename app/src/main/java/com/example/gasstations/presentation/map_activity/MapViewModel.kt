@@ -7,6 +7,7 @@ import com.example.gasstations.domain.usecase.GetAllRefuelsUseCase
 import com.example.gasstations.domain.usecase.IsNearestExistUseCase
 import com.example.gasstations.presentation.BaseViewModel
 import com.google.android.gms.maps.model.LatLng
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MapViewModel(
@@ -18,7 +19,7 @@ class MapViewModel(
     val checkLiveData = MutableLiveData<Boolean>()
 
     fun check(stationPosition: LatLng) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO)  {
             checkLiveData.postValue(isNearestExistUseCase.execute(stationPosition))
         }
     }
@@ -29,7 +30,7 @@ class MapViewModel(
         fuelVolume: Double,
         fuelPrice: Double
     ) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO)  {
             addRefuelUseCase.execute(
                 stationPosition,
                 fuelType,
@@ -46,7 +47,7 @@ class MapViewModel(
         fuelVolume: Double,
         fuelPrice: Double
     ) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO)  {
             addRefuelUseCase.execute(
                 brand,
                 stationPosition,
