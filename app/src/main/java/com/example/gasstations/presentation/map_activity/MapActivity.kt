@@ -96,12 +96,8 @@ class MapActivity :
     private fun addClusteredMarkers(googleMap: GoogleMap, items: List<RefuelCache>) {
 
         val clusterManager = ClusterManager<RefuelCache>(this, googleMap)
-        clusterManager.renderer =
-            PlaceRenderer(
-                this,
-                googleMap,
-                clusterManager
-            )
+
+        clusterManager.renderer = PlaceRenderer(this, googleMap, clusterManager)
 
         map.clear()
         clusterManager.addItems(items)
