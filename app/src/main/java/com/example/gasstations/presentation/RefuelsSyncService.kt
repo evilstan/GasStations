@@ -1,8 +1,6 @@
 package com.example.gasstations.presentation
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -18,6 +16,7 @@ import com.example.gasstations.data.storage.database.AppDatabase
 import com.example.gasstations.data.storage.models.RefuelCloud
 import com.example.gasstations.data.storage.models.RefuelCache
 import com.example.gasstations.domain.usecase.*
+import com.example.gasstations.presentation.main_activity.MainActivity
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -168,7 +167,6 @@ class RefuelsSyncService :
                         resources.getString(R.string.waiting_title)
                 }
             })
-
         Timer().schedule(object : TimerTask() {
             override fun run() {
                 val millis = System.currentTimeMillis() - startTime
@@ -181,9 +179,7 @@ class RefuelsSyncService :
                             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
                 )
                 startForeground(101, notification(title, time))
-
             }
-
         }, 0, 1000)
     }
 
@@ -191,6 +187,11 @@ class RefuelsSyncService :
         title: String,
         text: String
     ): Notification {
+        val resultIntent = Intent(this, MainActivity::class.java)
+        val resultPendingIntent: PendingIntent? = TaskStackBuilder.create(this).run {
+            addNextIntentWithParentStack(resultIntent)
+            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
         val channelId =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 createNotificationChannel(
@@ -208,6 +209,7 @@ class RefuelsSyncService :
             .setCategory(Notification.CATEGORY_SERVICE)
             .setContentTitle(title)
             .setContentText(text)
+            .setContentIntent(resultPendingIntent)
             .build()
     }
 
@@ -222,6 +224,12 @@ class RefuelsSyncService :
         val service = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         service.createNotificationChannel(channel)
         return channelId
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        deletedItemsLiveData.removeObservers(this)
+        newItemsLiveData.removeObservers(this)
     }
 
     companion object {
