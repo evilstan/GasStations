@@ -42,4 +42,9 @@ class StationInfoFragment : Fragment() {
         stationInfoViewModel.stationsInfoLiveData.observe(viewLifecycleOwner) { adapter.update(it) }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        stationInfoViewModel.stationsInfoLiveData.removeObservers(this)
+    }
+
 }

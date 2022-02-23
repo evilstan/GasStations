@@ -68,4 +68,9 @@ class RefuelsListFragment : Fragment(),
 
     override fun onChange(refuelCache: RefuelCache) =
        viewModel.updateStation(refuelCache)
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.refuelLiveData.removeObservers(this)
+    }
 }

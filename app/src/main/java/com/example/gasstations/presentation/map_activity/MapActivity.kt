@@ -244,6 +244,12 @@ class MapActivity :
         )
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mapViewModel.checkLiveData.removeObservers(this)
+        mapViewModel.stationsLiveData.removeObservers(this)
+    }
+
     companion object {
         private const val DEFAULT_ZOOM = 16
         private const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
