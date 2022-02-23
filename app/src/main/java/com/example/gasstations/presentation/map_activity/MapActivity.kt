@@ -18,7 +18,6 @@ import com.example.gasstations.data.storage.models.RefuelCache
 import com.example.gasstations.databinding.ActivityMapBinding
 import com.example.gasstations.domain.usecase.AddRefuelUseCase
 import com.example.gasstations.domain.usecase.GetAllGasStationsUseCase
-import com.example.gasstations.domain.usecase.GetAllRefuelsUseCase
 import com.example.gasstations.domain.usecase.IsNearestExistUseCase
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -85,11 +84,8 @@ class MapActivity :
 
         binding.addStationButton.setOnClickListener(this)
 
-        mapViewModel.stationsLiveData.observe(this) { it ->
+        mapViewModel.stationsLiveData.observe(this) {
             addClusteredMarkers(map, it)
-//            it.forEach {
-//                addMarker(LatLng(it.latitude, it.longitude), it.brand)
-//            }
         }
 
         mapViewModel.checkLiveData.observe(this) {
@@ -99,7 +95,6 @@ class MapActivity :
 
     private fun addClusteredMarkers(googleMap: GoogleMap, items: List<RefuelCache>) {
 
-        // Create the ClusterManager class and set the custom renderer.
         val clusterManager = ClusterManager<RefuelCache>(this, googleMap)
         clusterManager.renderer =
             PlaceRenderer(
@@ -107,13 +102,12 @@ class MapActivity :
                 googleMap,
                 clusterManager
             )
-        // Add the places to the ClusterManager.
+
         map.clear()
         clusterManager.addItems(items)
         clusterManager.cluster()
 
-        // Set ClusterManager as the OnCameraIdleListener so that it
-        // can re-cluster when zooming in and out.
+
         googleMap.setOnCameraIdleListener {
             clusterManager.onCameraIdle()
         }

@@ -1,6 +1,5 @@
 package com.example.gasstations.data.repository
 
-import androidx.lifecycle.LiveData
 import com.example.gasstations.data.storage.database.AppDatabase
 import com.example.gasstations.data.storage.models.RefuelCache
 import com.example.gasstations.domain.repository.Repository

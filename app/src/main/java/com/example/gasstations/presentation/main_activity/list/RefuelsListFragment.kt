@@ -13,7 +13,6 @@ import com.example.gasstations.data.storage.models.RefuelCache
 import com.example.gasstations.databinding.FragmentStationsListBinding
 import com.example.gasstations.domain.usecase.DeleteByLocalUseCase
 import com.example.gasstations.domain.usecase.GetAllRefuelsUseCase
-import com.example.gasstations.domain.usecase.GetNewItemsUseCase
 import com.example.gasstations.domain.usecase.UpdateRefuelUseCase
 import com.example.gasstations.presentation.map_activity.MapActivity
 

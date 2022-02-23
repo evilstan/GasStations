@@ -1,10 +1,7 @@
 package com.example.gasstations.presentation.map_activity
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import com.example.gasstations.R
 import com.example.gasstations.data.storage.models.RefuelCache
 import com.google.android.gms.maps.GoogleMap

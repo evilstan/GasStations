@@ -1,7 +1,6 @@
 package com.example.gasstations.data.storage.models
 
 import com.google.firebase.database.IgnoreExtraProperties
-import java.io.Serializable
 
 @IgnoreExtraProperties
 data class RefuelCloud(
