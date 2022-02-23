@@ -14,8 +14,10 @@ import com.example.gasstations.R
 import com.example.gasstations.data.core.App
 import com.example.gasstations.data.repository.RepositoryImpl
 import com.example.gasstations.data.storage.database.AppDatabase
+import com.example.gasstations.data.storage.models.RefuelCache
 import com.example.gasstations.databinding.ActivityMapBinding
 import com.example.gasstations.domain.usecase.AddRefuelUseCase
+import com.example.gasstations.domain.usecase.GetAllGasStationsUseCase
 import com.example.gasstations.domain.usecase.GetAllRefuelsUseCase
 import com.example.gasstations.domain.usecase.IsNearestExistUseCase
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -30,6 +32,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.maps.android.clustering.ClusterManager
 
 
 class MapActivity :
@@ -73,22 +76,46 @@ class MapActivity :
         mapViewModel = MapViewModel(
             AddRefuelUseCase(repository),
             IsNearestExistUseCase(repository),
-            GetAllRefuelsUseCase(repository)
+            GetAllGasStationsUseCase(repository)
         )
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment!!.getMapAsync(this)
+
         binding.addStationButton.setOnClickListener(this)
 
         mapViewModel.stationsLiveData.observe(this) { it ->
-            it.forEach {
-                addMarker(LatLng(it.latitude, it.longitude), it.brand)
-            }
+            addClusteredMarkers(map, it)
+//            it.forEach {
+//                addMarker(LatLng(it.latitude, it.longitude), it.brand)
+//            }
         }
 
         mapViewModel.checkLiveData.observe(this) {
             add(it)
+        }
+    }
+
+    private fun addClusteredMarkers(googleMap: GoogleMap, items: List<RefuelCache>) {
+
+        // Create the ClusterManager class and set the custom renderer.
+        val clusterManager = ClusterManager<RefuelCache>(this, googleMap)
+        clusterManager.renderer =
+            PlaceRenderer(
+                this,
+                googleMap,
+                clusterManager
+            )
+        // Add the places to the ClusterManager.
+        map.clear()
+        clusterManager.addItems(items)
+        clusterManager.cluster()
+
+        // Set ClusterManager as the OnCameraIdleListener so that it
+        // can re-cluster when zooming in and out.
+        googleMap.setOnCameraIdleListener {
+            clusterManager.onCameraIdle()
         }
     }
 
@@ -173,7 +200,8 @@ class MapActivity :
         when (requestCode) {
             PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION -> {
                 if (grantResults.isNotEmpty() &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED
+                ) {
                     locationPermissionGranted = true
                 }
             }

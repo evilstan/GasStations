@@ -7,6 +7,8 @@ interface Repository {
 
     suspend fun refuel(id: Long): RefuelCache
 
+    fun allGasStations(): LiveData<List<RefuelCache>>
+
     fun allRefuels(): LiveData<List<RefuelCache>>
 
     fun newRefuels(): LiveData<List<RefuelCache>>

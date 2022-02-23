@@ -9,12 +9,13 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.PRIORITY_MIN
 import androidx.lifecycle.LifecycleService
+import androidx.lifecycle.lifecycleScope
 import com.example.gasstations.R
 import com.example.gasstations.data.core.App
 import com.example.gasstations.data.repository.RepositoryImpl
 import com.example.gasstations.data.storage.database.AppDatabase
-import com.example.gasstations.data.storage.models.RefuelCloud
 import com.example.gasstations.data.storage.models.RefuelCache
+import com.example.gasstations.data.storage.models.RefuelCloud
 import com.example.gasstations.domain.usecase.*
 import com.example.gasstations.presentation.main_activity.MainActivity
 import com.google.firebase.database.ChildEventListener
@@ -24,9 +25,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -66,33 +65,27 @@ class RefuelsSyncService :
         listener = (object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val refuel = snapshot.getValue(RefuelCloud::class.java)
-                GlobalScope.launch(Dispatchers.Main) {
-                    withContext(Dispatchers.IO) {
-                        if (refuel != null) {
-                            addRefuelUseCase.execute(mapToCache(refuel))
-                        }
+                lifecycleScope.launch {
+                    if (refuel != null) {
+                        addRefuelUseCase.execute(mapToCache(refuel))
                     }
                 }
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
                 val refuel = snapshot.getValue(RefuelCloud::class.java)
-                GlobalScope.launch(Dispatchers.Main) {
-                    withContext(Dispatchers.IO) {
-                        if (refuel != null) {
-                            updateRefuelUseCase.execute(mapToCache(refuel))
-                        }
+                lifecycleScope.launch(Dispatchers.IO) {
+                    if (refuel != null) {
+                        updateRefuelUseCase.execute(mapToCache(refuel))
                     }
                 }
             }
 
             override fun onChildRemoved(snapshot: DataSnapshot) {
                 val refuel = snapshot.getValue(RefuelCloud::class.java)
-                GlobalScope.launch(Dispatchers.Main) {
-                    withContext(Dispatchers.IO) {
-                        if (refuel != null) {
-                            deleteByServerUseCase.execute(refuel.id!!)
-                        }
+                lifecycleScope.launch(Dispatchers.IO) {
+                    if (refuel != null) {
+                        deleteByServerUseCase.execute(refuel.id!!)
                     }
                 }
             }
@@ -115,10 +108,8 @@ class RefuelsSyncService :
                     .setValue(mapToCloud(refuelCache))
                     .addOnSuccessListener {
                         refuelCache.uploaded = true
-                        GlobalScope.launch(Dispatchers.Main) {
-                            withContext(Dispatchers.IO) {
-                                updateRefuelUseCase.execute(refuelCache)
-                            }
+                        (applicationContext as App).scope.launch {
+                            updateRefuelUseCase.execute(refuelCache)
                         }
                     }
             }

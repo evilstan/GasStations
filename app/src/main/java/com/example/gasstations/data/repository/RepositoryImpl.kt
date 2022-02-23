@@ -1,5 +1,6 @@
 package com.example.gasstations.data.repository
 
+import androidx.lifecycle.LiveData
 import com.example.gasstations.data.storage.database.AppDatabase
 import com.example.gasstations.data.storage.models.RefuelCache
 import com.example.gasstations.domain.repository.Repository
@@ -10,6 +11,9 @@ class RepositoryImpl(private val appDatabase: AppDatabase) : Repository {
 
     override suspend fun refuel(id: Long) =
         appDatabase.refuelDao().refuel(id)
+
+    override fun allGasStations() =
+        appDatabase.refuelDao().allGasStations()
 
     override fun allRefuels() =
         appDatabase.refuelDao().allRefuels()
