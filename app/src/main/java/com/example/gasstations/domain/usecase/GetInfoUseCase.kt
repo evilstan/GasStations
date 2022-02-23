@@ -12,11 +12,9 @@ import kotlinx.coroutines.flow.collect
 class GetInfoUseCase(private val repository: Repository) {
 
     init {
-        GlobalScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO) {
-                repository.allRefuels().asFlow().collect { value ->
-                    info.postValue(calculate(value))
-                }
+        GlobalScope.launch(Dispatchers.IO)  {
+            repository.allRefuels().asFlow().collect { value ->
+                info.postValue(calculate(value))
             }
         }
     }

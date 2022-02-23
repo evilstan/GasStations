@@ -3,7 +3,7 @@ package com.example.gasstations.presentation.map_activity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.gasstations.domain.usecase.AddRefuelUseCase
-import com.example.gasstations.domain.usecase.GetAllRefuelsUseCase
+import com.example.gasstations.domain.usecase.GetAllGasStationsUseCase
 import com.example.gasstations.domain.usecase.IsNearestExistUseCase
 import com.example.gasstations.presentation.BaseViewModel
 import com.google.android.gms.maps.model.LatLng
@@ -13,13 +13,14 @@ import kotlinx.coroutines.launch
 class MapViewModel(
     private val addRefuelUseCase: AddRefuelUseCase,
     private val isNearestExistUseCase: IsNearestExistUseCase,
-    getAllRefuelsUseCase: GetAllRefuelsUseCase
+    getAllGasStationsUseCase: GetAllGasStationsUseCase
 ) : BaseViewModel() {
-    var stationsLiveData = getAllRefuelsUseCase.refuels
+    var stationsLiveData = getAllGasStationsUseCase.stations
     val checkLiveData = MutableLiveData<Boolean>()
 
+
     fun check(stationPosition: LatLng) {
-        viewModelScope.launch(Dispatchers.IO)  {
+        viewModelScope.launch(Dispatchers.IO) {
             checkLiveData.postValue(isNearestExistUseCase.execute(stationPosition))
         }
     }
@@ -30,7 +31,7 @@ class MapViewModel(
         fuelVolume: Double,
         fuelPrice: Double
     ) {
-        viewModelScope.launch(Dispatchers.IO)  {
+        viewModelScope.launch(Dispatchers.IO) {
             addRefuelUseCase.execute(
                 stationPosition,
                 fuelType,
@@ -47,7 +48,7 @@ class MapViewModel(
         fuelVolume: Double,
         fuelPrice: Double
     ) {
-        viewModelScope.launch(Dispatchers.IO)  {
+        viewModelScope.launch(Dispatchers.IO) {
             addRefuelUseCase.execute(
                 brand,
                 stationPosition,

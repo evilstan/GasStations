@@ -11,6 +11,9 @@ class RepositoryImpl(private val appDatabase: AppDatabase) : Repository {
     override suspend fun refuel(id: Long) =
         appDatabase.refuelDao().refuel(id)
 
+    override fun allGasStations() =
+        appDatabase.refuelDao().allGasStations()
+
     override fun allRefuels() =
         appDatabase.refuelDao().allRefuels()
 

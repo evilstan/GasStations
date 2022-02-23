@@ -13,6 +13,9 @@ interface RefuelDao {
     @Query("SELECT EXISTS (SELECT 1 FROM refuels WHERE id = :id)")
     suspend fun contains(id: Long): Boolean
 
+    @Query("SELECT * FROM refuels WHERE deleted = 0 GROUP BY latitude, longitude")
+    fun allGasStations(): LiveData<List<RefuelCache>>
+
     @Query("SELECT * FROM refuels WHERE deleted = 0")
     fun allRefuels(): LiveData<List<RefuelCache>>
 
